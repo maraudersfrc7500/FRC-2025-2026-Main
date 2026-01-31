@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -26,6 +28,11 @@ public class Drive extends SubsystemBase{
         
         smConfig = new SparkMaxConfig();
         smConfig.idleMode(IdleMode.kBrake);
+
+        motorFL1.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorFR2.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorBL3.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorBR4.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
         fLEncoder = motorFL1.getEncoder();
 
