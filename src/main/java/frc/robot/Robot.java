@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Launcher;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -20,6 +21,7 @@ public class Robot extends TimedRobot {
   private Drive driveS;
   private Intake intakeS;
   private Conveyor conveyorS;
+  private Launcher launcherS;
   private XboxController driver, operator;
 
   public Robot() {
@@ -27,6 +29,8 @@ public class Robot extends TimedRobot {
     //Subsystems
     driveS = new Drive();
     intakeS = new Intake();
+    conveyorS = new Conveyor();
+    launcherS = new Launcher();
     //Controllers
     driver = new XboxController(0);
     operator = new XboxController(1);
@@ -91,6 +95,17 @@ public class Robot extends TimedRobot {
       } else {
         conveyorS.disable();
         toggleC = false;
+      }
+    }
+
+    boolean toggleL = false;
+    if (driver.getXButton()) {
+      if (!toggleL) {
+        launcherS.enable();
+        toggleL = true;
+      } else {
+        launcherS.disable();
+        toggleL = false;
       }
     }
   }
