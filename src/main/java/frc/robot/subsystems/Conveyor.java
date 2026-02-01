@@ -8,25 +8,25 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Conveyor {
-    private final SparkMax motorC7, motorC8;
+    private final SparkMax motorC5, motorC6;
 
     public Conveyor() {
-        motorC7 = new SparkMax(7,MotorType.kBrushless);
-        motorC8 = new SparkMax(8,MotorType.kBrushless);
+        motorC5 = new SparkMax(7,MotorType.kBrushless);
+        motorC6 = new SparkMax(8,MotorType.kBrushless);
 
         SparkMaxConfig smConfig = new SparkMaxConfig();
         smConfig.idleMode(IdleMode.kBrake);
 
-        motorC7.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorC8.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorC5.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorC6.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void enable() {
-        motorC7.set(0.8);
-        motorC8.set(0.8);
+        motorC5.set(0.8);
+        motorC6.set(0.8);
     }
     public void disable() {
-        motorC7.stopMotor();
-        motorC8.stopMotor();
+        motorC5.stopMotor();
+        motorC6.stopMotor();
     }
 }

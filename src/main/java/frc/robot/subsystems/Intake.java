@@ -8,28 +8,28 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Intake {
-    private final SparkMax motorI5, motorV6;
+    private final SparkMax motorI3, motorV4;
 
     public Intake() {
-        motorI5 = new SparkMax(5, MotorType.kBrushless);
-        motorV6 = new SparkMax(6,MotorType.kBrushless);
+        motorI3 = new SparkMax(5, MotorType.kBrushless);
+        motorV4 = new SparkMax(6,MotorType.kBrushless);
 
         SparkMaxConfig smConfig = new SparkMaxConfig();
         smConfig.idleMode(IdleMode.kBrake);
 
-        motorI5.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorV6.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorI3.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorV4.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
     public void forward() {
-        motorI5.set(0.8);
-        motorV6.set(0.8);
+        motorI3.set(0.8);
+        motorV4.set(0.8);
     }
     public void reverse() {
-        motorI5.set(-0.8);
-        motorV6.set(-0.8);
+        motorI3.set(-0.8);
+        motorV4.set(-0.8);
     }
     public void disable() {
-        motorI5.stopMotor();
-        motorV6.stopMotor();
+        motorI3.stopMotor();
+        motorV4.stopMotor();
     }
 }

@@ -8,25 +8,25 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Launcher {
-    private final SparkMax motorL9, motorL10;
+    private final SparkMax motorL7, motorL8;
 
     public Launcher() {
-        motorL9 = new SparkMax(10, MotorType.kBrushless);
-        motorL10 = new SparkMax(11, MotorType.kBrushless);
+        motorL7 = new SparkMax(10, MotorType.kBrushless);
+        motorL8 = new SparkMax(11, MotorType.kBrushless);
 
         SparkMaxConfig smConfig = new SparkMaxConfig();
         smConfig.idleMode(IdleMode.kBrake);
 
-        motorL9.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorL10.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorL7.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorL8.configure(smConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void enable() {
-        motorL9.set(0.8);
-        motorL10.set(0.8);
+        motorL7.set(0.8);
+        motorL8.set(0.8);
     }
     public void disable() {
-        motorL9.stopMotor();
-        motorL10.stopMotor();
+        motorL7.stopMotor();
+        motorL8.stopMotor();
     }
 }
