@@ -64,6 +64,16 @@ public class Drive extends SubsystemBase{
         diff.arcadeDrive(x, xr);
     }
 
+    public double getX() {
+        return diffOdom.getPoseMeters().getX();
+    }
+    public double getY() {
+        return diffOdom.getPoseMeters().getY();
+    }
+    public double getH() {
+        return diffOdom.getPoseMeters().getRotation().getDegrees();
+    }
+
     @Override
     public void periodic() {
         double wheelCircumference = Math.PI * Units.inchesToMeters(0);
