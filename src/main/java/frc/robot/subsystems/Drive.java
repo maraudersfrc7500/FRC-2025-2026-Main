@@ -19,43 +19,52 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase{
-    private final SparkMax motorL1,motorR2;
-    private final SparkMaxConfig smConfig;
+    private final SparkMax motorLL1,motorRL2,motorLF3,motorRF4;
     private final RelativeEncoder LEncoder, REncoder;
-    private final Translation2d LwheelLoc, RwheelLoc;
 
     private final DifferentialDrive diff;
     private final DifferentialDriveKinematics diffKin;
     private DifferentialDriveOdometry diffOdom;
 
     public Drive() {
-        motorL1 = new SparkMax(1, MotorType.kBrushless);
-        motorR2 = new SparkMax(2, MotorType.kBrushless);
-        
-        motorR2.setInverted(true);
-        
-        smConfig = new SparkMaxConfig();
-        smConfig.idleMode(IdleMode.kBrake);
+        motorLL1 = new SparkMax(1, MotorType.kBrushless);
+        motorLF3 = new SparkMax(3,MotorType.kBrushless);
+        motorRL2 = new SparkMax(2, MotorType.kBrushless);
+        motorRF4 = new SparkMax(4,MotorType.kBrushless);
 
-        motorL1.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        motorR2.configure(smConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        SparkMaxConfig configLL = new SparkMaxConfig();
+        configLL.idleMode(IdleMode.kBrake);
+        SparkMaxConfig configLF = new SparkMaxConfig();
+        configLF.follow(motorLL1);
+        configLF.idleMode(IdleMode.kBrake);
+        SparkMaxConfig configRL = new SparkMaxConfig();
+        configRL.idleMode(IdleMode.kBrake);
+        configRL.inverted(true);
+        SparkMaxConfig configRF = new SparkMaxConfig();
+        configRF.follow(motorRL2);
+        configRF.idleMode(IdleMode.kBrake);
+        configRF.inverted(true);
+
+        motorLL1.configure(configLL,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorRL2.configure(configRL,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorLF3.configure(configLF,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        motorRF4.configure(configRF,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
-        LEncoder = motorL1.getEncoder();
-        REncoder = motorR2.getEncoder();
+        LEncoder = motorLL1.getEncoder();
+        REncoder = motorRL2.getEncoder();
 
         LEncoder.setPosition(0);
         REncoder.setPosition(0);
 
-        diff = new DifferentialDrive(motorL1, motorR2);
+        diff = new DifferentialDrive(motorLL1, motorRL2);
         diff.setSafetyEnabled(false);
 
         diffKin = new DifferentialDriveKinematics(Units.inchesToMeters(0)); //need distance between left and right wheel of robot in inches
-
-        LwheelLoc = new Translation2d(0,0);
-        RwheelLoc = new Translation2d(0,0);
 
         Pose2d start = new Pose2d(0,0,new Rotation2d(0));
         diffOdom = new DifferentialDriveOdometry(null, LEncoder.getPosition(), REncoder.getPosition(),start);
@@ -76,10 +85,13 @@ public class Drive extends SubsystemBase{
 
     @Override
     public void periodic() {
-        double wheelCircumference = Math.PI * Units.inchesToMeters(0);
-        double gearRatio = 1;
+        double wheelCircumference = Math.PI * Units.inchesToMeters(6);
+        double gearRatio = 8.46;
         double leftPos = (LEncoder.getPosition()/gearRatio) * wheelCircumference;
         double rightPos = (REncoder.getPosition()/gearRatio) * wheelCircumference;
         diffOdom.update(null, leftPos, rightPos);
+        SmartDashboard.putNumber("XPos: ", getX());
+        SmartDashboard.putNumber("YPos: ",getY());
+        SmartDashboard.putNumber("Heading: ",getH());
     }
 }

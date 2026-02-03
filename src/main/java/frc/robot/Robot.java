@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    driveS.robotCentricDrive(driver.getLeftY(), driver.getRightX());
+    driveS.robotCentricDrive(-driver.getLeftY(), -driver.getLeftX());
 
     boolean toggleI = false;
     if (driver.getAButtonPressed()) {
