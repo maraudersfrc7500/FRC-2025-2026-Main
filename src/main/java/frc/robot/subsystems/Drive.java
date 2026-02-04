@@ -18,6 +18,8 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase{
+    private final PowerDistribution PD;
     private final SparkMax motorLL1,motorRL2,motorLF3,motorRF4;
     private final RelativeEncoder LEncoder, REncoder;
     private final Pigeon2 gyro;
@@ -34,6 +37,8 @@ public class Drive extends SubsystemBase{
     private DifferentialDriveOdometry diffOdom;
 
     public Drive() {
+        PD = new PowerDistribution(63,ModuleType.kRev);
+
         motorLL1 = new SparkMax(1, MotorType.kBrushless);
         motorLF3 = new SparkMax(3,MotorType.kBrushless);
         motorRL2 = new SparkMax(2, MotorType.kBrushless);
@@ -101,5 +106,6 @@ public class Drive extends SubsystemBase{
         SmartDashboard.putNumber("YPos: ",getY());
         SmartDashboard.putNumber("Heading: ",getH());
         SmartDashboard.putNumber("Heading Gyro: ",getHGyro());  
+        SmartDashboard.putNumber("Voltage: ",PD.getVoltage());
     }
 }
