@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.wpilog.WPILOGWriter.AdvantageScopeOpenBehavior;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
@@ -30,7 +32,7 @@ public class Drive extends SubsystemBase{
     private final PowerDistribution PD;
     private final SparkMax motorLL1,motorRL2,motorLF3,motorRF4;
     private final RelativeEncoder LEncoder, REncoder;
-    private final Pigeon2 gyro;
+    private final Pigeon2 pige;
 
     private final DifferentialDrive diff;
     private final DifferentialDriveKinematics diffKin;
@@ -38,7 +40,7 @@ public class Drive extends SubsystemBase{
 
     public Drive() {
         PD = new PowerDistribution(63,ModuleType.kRev);
-        gyro = new Pigeon2(62);
+        pige = new Pigeon2(62);
 
         motorLL1 = new SparkMax(1, MotorType.kBrushless);
         motorLF3 = new SparkMax(3,MotorType.kBrushless);
@@ -75,7 +77,7 @@ public class Drive extends SubsystemBase{
         diffKin = new DifferentialDriveKinematics(Units.inchesToMeters(19.5));
 
         Pose2d start = new Pose2d(0,0,new Rotation2d(0));
-        diffOdom = new DifferentialDriveOdometry(gyro.getRotation2d(), LEncoder.getPosition(), REncoder.getPosition(),start);
+        diffOdom = new DifferentialDriveOdometry(pige.getRotation2d(), LEncoder.getPosition(), REncoder.getPosition(),start);
     }
     public void robotCentricDrive(double x, double xr) {
         diff.arcadeDrive(x, xr);
@@ -91,7 +93,7 @@ public class Drive extends SubsystemBase{
         return diffOdom.getPoseMeters().getRotation().getDegrees();
     }
     public double getHGyro() {
-        return gyro.getYaw().getValueAsDouble();
+        return pige.getYaw().getValueAsDouble();
     }
 
     @Override
@@ -100,11 +102,12 @@ public class Drive extends SubsystemBase{
         double gearRatio = 8.46;
         double leftPos = (LEncoder.getPosition()/gearRatio) * wheelCircumference;
         double rightPos = (REncoder.getPosition()/gearRatio) * wheelCircumference;
-        diffOdom.update(gyro.getRotation2d(), leftPos, rightPos);
+        diffOdom.update(pige.getRotation2d(), leftPos, rightPos);
         SmartDashboard.putNumber("XPos: ", getX());
         SmartDashboard.putNumber("YPos: ",getY());
         SmartDashboard.putNumber("Heading: ",getH());
         SmartDashboard.putNumber("Heading Gyro: ",getHGyro());  
         SmartDashboard.putNumber("Voltage: ",PD.getVoltage());
+        
     }
 }
