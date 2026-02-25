@@ -34,10 +34,10 @@
     private PowerDistribution PD;
 
     private final Drive driveS;
-    private final Intake intakeS;
-    private final Launcher launcherS;
-    private final Omnispike omnispikeS;
-    private final Climb climbS;
+    // private final Intake intakeS;
+    // private final Launcher launcherS;
+    // private final Omnispike omnispikeS;
+    // private final Climb climbS;
 
     private XboxController driver, operator;
 
@@ -54,10 +54,10 @@
       PD = new PowerDistribution(63,ModuleType.kRev);
 
       driveS = new Drive();
-      intakeS = new Intake();
-      launcherS = new Launcher();
-      omnispikeS = new Omnispike();
-      climbS = new Climb();
+      // intakeS = new Intake();
+      // launcherS = new Launcher();
+      // omnispikeS = new Omnispike();
+      // climbS = new Climb();
 
       driver = new XboxController(0);
       operator = new XboxController(1);
@@ -129,7 +129,7 @@
           driveS.robotCentricDrive(leftY, rightX);
           break;
         case 1:
-          driveS.robotCentricTank(leftY, rightY);
+          driveS.driveNoSquare(triggerSpeed, leftX);
           break;
         case 2:
           driveS.rocketLeague(triggerSpeed, leftX);

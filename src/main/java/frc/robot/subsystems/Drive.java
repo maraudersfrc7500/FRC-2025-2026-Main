@@ -72,11 +72,12 @@ public class Drive extends SubsystemBase{
         motorLF3.configure(configLF,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         motorRF4.configure(configRF,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
-        LEncoder = new Encoder(2,3,false,EncodingType.k2X);
-        REncoder = new Encoder(0,1,true,EncodingType.k2X);
+        LEncoder = new Encoder(2,3,true,EncodingType.k4X);
+        REncoder = new Encoder(0,1,false,EncodingType.k4X);
 
-        LEncoder.setReverseDirection(true);
-        REncoder.setReverseDirection(false);
+        double distancePerPulse = (Math.PI * Units.inchesToMeters(6)) / (1024);
+        LEncoder.setDistancePerPulse(distancePerPulse);
+        REncoder.setDistancePerPulse(distancePerPulse);
 
         resetEncoders();
 
@@ -86,16 +87,16 @@ public class Drive extends SubsystemBase{
         diffKin = new DifferentialDriveKinematics(Units.inchesToMeters(19.5));
 
         Pose2d start = new Pose2d(0,0,new Rotation2d(0));
-        diffOdom = new DifferentialDriveOdometry(pige.getRotation2d(), LEncoder.get(), REncoder.get(),start);
+        diffOdom = new DifferentialDriveOdometry(pige.getRotation2d(), LEncoder.getDistance(), REncoder.getDistance(),start);
     }
     public void robotCentricDrive(double x, double xr) {
         diff.arcadeDrive(x, xr);
     }
-    public void robotCentricTank(double x1, double x2) {
-        diff.tankDrive(x1,x2);
+    public void driveNoSquare(double s, double t) {
+        diff.arcadeDrive(s,t,false);
     }
     public void rocketLeague(double s, double t) {
-        diff.curvatureDrive(s, t, false);
+        diff.arcadeDrive(s, t, true);
     }
     public void drive(ChassisSpeeds speeds) {
         DifferentialDriveWheelSpeeds wheelSpeeds = diffKin.toWheelSpeeds(speeds);
@@ -141,15 +142,22 @@ public class Drive extends SubsystemBase{
     public double getLeftMeters() {
         double L = LEncoder.getDistance();
         return (-2056.32 + Math.sqrt(4228451 + 13.577 * (L + 8.307))) / 6.7883;
+        // return L;
+        // return ticksToMeters(L);
     }
     public double getRightMeters() {
         double R = REncoder.getDistance();
         return (-2054.06 + Math.sqrt(4219164 + 18.372 * (R + 7.978))) / 9.1862;
+        // return R;
+        // return ticksToMeters(R);
+    }
+    public double ticksToMeters(double ticks) {
+        return (ticks / 4096.0) * (Math.PI * Units.inchesToMeters(6)) / 8.46;
     }
 
     @Override
     public void periodic() {
-        diffOdom.update(pige.getRotation2d(), getLeftMeters(), getRightMeters());
+        diffOdom.update(pige.getRotation2d(), LEncoder.getDistance(), REncoder.getDistance());
     }
 
     public double getEncoderLeft() {
@@ -158,14 +166,14 @@ public class Drive extends SubsystemBase{
     public double getEncoderRight() {
         return REncoder.getDistance();
     }
-    public void updatePositionFromLimelight() {
-        if (LimelightHelpers.getTV("limelight-front")) {
-            position = LimelightHelpers.getBotPose2d("limelight-front");
-        } else if (LimelightHelpers.getTV("limelight-back")) {
-            position = LimelightHelpers.getBotPose2d("limelight-back");
-        }
-        SmartDashboard.putNumber("XPosLime: ", position.getX());
-        SmartDashboard.putNumber("YPosLime: ", position.getY());
-        SmartDashboard.putNumber("HeadingLime: ", position.getRotation().getDegrees());
-    }
+    // public void updatePositionFromLimelight() {
+    //     if (LimelightHelpers.getTV("limelight-front")) {
+    //         position = LimelightHelpers.getBotPose2d("limelight-front");
+    //     } else if (LimelightHelpers.getTV("limelight-back")) {
+    //         position = LimelightHelpers.getBotPose2d("limelight-back");
+    //     }
+    //     SmartDashboard.putNumber("XPosLime: ", position.getX());
+    //     SmartDashboard.putNumber("YPosLime: ", position.getY());
+    //     SmartDashboard.putNumber("HeadingLime: ", position.getRotation().getDegrees());
+    // }
 }
