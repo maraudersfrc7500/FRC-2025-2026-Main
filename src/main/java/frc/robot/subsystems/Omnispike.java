@@ -11,25 +11,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Omnispike extends SubsystemBase {
-    private final SparkMax motorSP7, motorSP8;
+    private final SparkMax motorSP7;
 
     public Omnispike() {
         motorSP7 = new SparkMax(7, MotorType.kBrushless);
-        motorSP8 = new SparkMax(8, MotorType.kBrushless);
 
         SparkMaxConfig motorSP7Config = new SparkMaxConfig();
         motorSP7Config.idleMode(IdleMode.kBrake);
-        SparkMaxConfig motorSP8Config = new SparkMaxConfig();
-        motorSP8Config.idleMode(IdleMode.kBrake);
-        motorSP8Config.follow(motorSP7);
         
         motorSP7.configure(motorSP7Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorSP8.configure(motorSP8Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
     public void enable() {
         motorSP7.set(0.8);
     }
     public void disable() {
-        motorSP8.stopMotor();
+        motorSP7.stopMotor();
     }
 }

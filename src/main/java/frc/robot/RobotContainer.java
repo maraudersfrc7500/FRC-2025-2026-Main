@@ -45,9 +45,6 @@
     private final SendableChooser<Integer> driveChooser;
     private int driveType;
 
-    private Alert lowBattery = new Alert("Low Battery!",AlertType.kWarning);
-    private Alert replaceBattery = new Alert("Replace Battery Now!",AlertType.kError);
-
     private double triggerSpeed, leftY, leftX, rightY, rightX;
 
     public RobotContainer() {
@@ -152,8 +149,7 @@
       SmartDashboard.putNumber("Left Y: ", leftY);
       SmartDashboard.putNumber("Right Y: ", rightY);
       SmartDashboard.putNumber("Trigger Speed", triggerSpeed);
-      lowBattery.set(PD.getVoltage()<12.0);
-      replaceBattery.set(PD.getVoltage() < 11.8);
+      SmartDashboard.putBoolean("Replace Battery", PD.getVoltage() < 12.2);
     }
 
     public Command getAutonomousCommand() {

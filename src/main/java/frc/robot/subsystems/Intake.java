@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
         motorI5.setNeutralMode(NeutralModeValue.Brake);
         motorV6.setNeutralMode(NeutralModeValue.Brake);
 
-        motorI5.setControl(new Follower(motorI5.getDeviceID(), MotorAlignmentValue.Aligned));
+        motorI5.setControl(new Follower(motorI5.getDeviceID(), MotorAlignmentValue.Opposed));
     }
     public void forward() {
         motorI5.set(0.8);
