@@ -5,32 +5,22 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.revrobotics.PersistMode;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
-import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
@@ -44,7 +34,7 @@ public class Drive extends SubsystemBase{
     private final DifferentialDriveKinematics diffKin;
     private DifferentialDriveOdometry diffOdom;
 
-    private Pose2d position;
+    private Pose2d frontLimePos, backLimePos;
 
     public Drive() {
         pige = new Pigeon2(62);
@@ -86,8 +76,14 @@ public class Drive extends SubsystemBase{
 
         diffKin = new DifferentialDriveKinematics(Units.inchesToMeters(19.5));
 
+        frontLimePos = new Pose2d(0,0,new Rotation2d(0));
+        backLimePos = new Pose2d(0,0,new Rotation2d(0));
+
         Pose2d start = new Pose2d(0,0,new Rotation2d(0));
         diffOdom = new DifferentialDriveOdometry(pige.getRotation2d(), LEncoder.getDistance(), REncoder.getDistance(),start);
+
+        LimelightHelpers.setPipelineIndex("limelight-front", 0);
+        LimelightHelpers.setPipelineIndex("limelight-back", 0);
     }
     public void robotCentricDrive(double x, double xr) {
         diff.arcadeDrive(x, xr);
@@ -139,24 +135,10 @@ public class Drive extends SubsystemBase{
         LEncoder.reset();
         REncoder.reset();
     }
-    public double getLeftMeters() {
-        double L = LEncoder.getDistance();
-        return (-2056.32 + Math.sqrt(4228451 + 13.577 * (L + 8.307))) / 6.7883;
-        // return L;
-        // return ticksToMeters(L);
-    }
-    public double getRightMeters() {
-        double R = REncoder.getDistance();
-        return (-2054.06 + Math.sqrt(4219164 + 18.372 * (R + 7.978))) / 9.1862;
-        // return R;
-        // return ticksToMeters(R);
-    }
-    public double ticksToMeters(double ticks) {
-        return (ticks / 4096.0) * (Math.PI * Units.inchesToMeters(6)) / 8.46;
-    }
 
     @Override
     public void periodic() {
+        // getLimePos();
         diffOdom.update(pige.getRotation2d(), LEncoder.getDistance(), REncoder.getDistance());
     }
 
@@ -166,14 +148,24 @@ public class Drive extends SubsystemBase{
     public double getEncoderRight() {
         return REncoder.getDistance();
     }
-    // public void updatePositionFromLimelight() {
-    //     if (LimelightHelpers.getTV("limelight-front")) {
-    //         position = LimelightHelpers.getBotPose2d("limelight-front");
-    //     } else if (LimelightHelpers.getTV("limelight-back")) {
-    //         position = LimelightHelpers.getBotPose2d("limelight-back");
-    //     }
-    //     SmartDashboard.putNumber("XPosLime: ", position.getX());
-    //     SmartDashboard.putNumber("YPosLime: ", position.getY());
-    //     SmartDashboard.putNumber("HeadingLime: ", position.getRotation().getDegrees());
-    // }
+    public void getLimePos() {
+        String f = "limelight-front";
+        String b = "limelight-back";
+        if (LimelightHelpers.getTV(f)) {
+            frontLimePos = LimelightHelpers.getBotPose2d_wpiBlue("limelight-front");
+            SmartDashboard.putNumber("XPosFront: ", frontLimePos.getX());
+            SmartDashboard.putNumber("YPosFront: ", frontLimePos.getY());
+            SmartDashboard.putNumber("HeadingFront: ", frontLimePos.getRotation().getDegrees());
+            updateOdom(frontLimePos);
+        } else if (LimelightHelpers.getTV(b)) {
+            backLimePos = LimelightHelpers.getBotPose2d_wpiBlue("limelight-back");
+            SmartDashboard.putNumber("XPosBack: ", backLimePos.getX());
+            SmartDashboard.putNumber("YPosBack: ", backLimePos.getY());
+            SmartDashboard.putNumber("HeadingBack: ", backLimePos.getRotation().getDegrees());
+            updateOdom(backLimePos);
+        }
+    }
+    public void updateOdom(Pose2d limePose) {
+        diffOdom.resetPosition(pige.getRotation2d(),LEncoder.getDistance(),REncoder.getDistance(),limePose);
+    }
 }

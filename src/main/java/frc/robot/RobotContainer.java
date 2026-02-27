@@ -144,8 +144,6 @@
       SmartDashboard.putNumber("Voltage: ",PD.getVoltage());
       SmartDashboard.putNumber("Encoder Left: ", driveS.getEncoderLeft());
       SmartDashboard.putNumber("Encoder Right: ", driveS.getEncoderRight());
-      SmartDashboard.putNumber("Left Meters: ",driveS.getLeftMeters());
-      SmartDashboard.putNumber("Right Meters: ",driveS.getRightMeters());
       SmartDashboard.putNumber("Left Y: ", leftY);
       SmartDashboard.putNumber("Right Y: ", rightY);
       SmartDashboard.putNumber("Trigger Speed", triggerSpeed);
