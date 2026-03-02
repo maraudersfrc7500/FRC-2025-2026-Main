@@ -19,22 +19,22 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Launcher extends SubsystemBase {
     // private final SparkMax motorL9, motorL10;
-    private final TalonFX motorL9, motorL10;
+    private final TalonFX motorLL9, motorLF10;
 
     public Launcher() {
-        motorL9 = new TalonFX(9);
-        motorL10 = new TalonFX(10);
+        motorLL9 = new TalonFX(9);
+        motorLF10 = new TalonFX(10);
         
-        motorL9.setNeutralMode(NeutralModeValue.Brake);
-        motorL10.setNeutralMode(NeutralModeValue.Brake);
+        motorLL9.setNeutralMode(NeutralModeValue.Brake);
+        motorLF10.setNeutralMode(NeutralModeValue.Brake);
 
-        motorL10.setControl(new Follower(motorL9.getDeviceID(), MotorAlignmentValue.Aligned));
+        motorLF10.setControl(new Follower(motorLL9.getDeviceID(), MotorAlignmentValue.Aligned));
     }
 
     public void enable() {
-        motorL9.set(0.8);
+        motorLL9.set(0.8);
     }
     public void disable() {
-        motorL9.stopMotor();
+        motorLL9.stopMotor();
     }
 }

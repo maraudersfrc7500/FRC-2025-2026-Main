@@ -15,25 +15,25 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Intake extends SubsystemBase {
-    private final TalonFX motorI5, motorV6;
+    private final TalonFX motorIL5, motorIF6;
     // private final SparkMax motorI5, motorV6;
 
     public Intake() {
-        motorI5 = new TalonFX(5);
-        motorV6 = new TalonFX(6);
+        motorIL5 = new TalonFX(5);
+        motorIF6 = new TalonFX(6);
 
-        motorI5.setNeutralMode(NeutralModeValue.Brake);
-        motorV6.setNeutralMode(NeutralModeValue.Brake);
+        motorIL5.setNeutralMode(NeutralModeValue.Brake);
+        motorIF6.setNeutralMode(NeutralModeValue.Brake);
 
-        motorI5.setControl(new Follower(motorI5.getDeviceID(), MotorAlignmentValue.Opposed));
+        motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
     }
     public void forward() {
-        motorI5.set(0.8);
+        motorIL5.set(0.8);
     }
     public void reverse() {
-        motorI5.set(-0.8);
+        motorIL5.set(-0.8);
     }
     public void disable() {
-        motorI5.stopMotor();
+        motorIL5.stopMotor();
     }
 }
