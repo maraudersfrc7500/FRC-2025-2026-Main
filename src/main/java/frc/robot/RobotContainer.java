@@ -34,7 +34,7 @@
     private PowerDistribution PD;
 
     private final Drive driveS;
-    // private final Intake intakeS;
+    private final Intake intakeS;
     // private final Launcher launcherS;
     // private final Omnispike omnispikeS;
     // private final Climb climbS;
@@ -51,7 +51,7 @@
       PD = new PowerDistribution(63,ModuleType.kRev);
 
       driveS = new Drive();
-      // intakeS = new Intake();
+      intakeS = new Intake();
       // launcherS = new Launcher();
       // omnispikeS = new Omnispike();
       // climbS = new Climb();
@@ -131,6 +131,15 @@
         case 2:
           driveS.rocketLeague(triggerSpeed, leftX);
       }
+
+      if (driver.getYButtonPressed()) {
+        intakeS.forward();
+      } else if (driver.getAButtonPressed()) {
+        intakeS.reverse();
+      } else if (driver.getBButtonPressed()) {
+        intakeS.disable();
+      }
+      intakeS.run(driver.getRightY());
     }
 
     public void getDriveChoice() {
