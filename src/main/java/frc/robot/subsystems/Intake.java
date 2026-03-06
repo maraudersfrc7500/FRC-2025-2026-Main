@@ -28,15 +28,18 @@ public class Intake extends SubsystemBase {
         motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
     }
     public void forward() {
-        motorIL5.set(0.2);
+        motorIL5.set(0.5);
     }
     public void reverse() {
-        motorIL5.set(-0.2);
+        motorIL5.set(-0.5);
     }
     public void disable() {
         motorIL5.stopMotor();
     }
-    public void run(double s) {
+    public void spin(double s) {
         motorIL5.set(s);
+    }
+    public double getPos() {
+        return motorIL5.getPosition().getValueAsDouble();
     }
 }

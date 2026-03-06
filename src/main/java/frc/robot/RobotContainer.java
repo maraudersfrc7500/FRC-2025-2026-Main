@@ -132,14 +132,14 @@
           driveS.rocketLeague(triggerSpeed, leftX);
       }
 
-      if (driver.getYButtonPressed()) {
-        intakeS.forward();
-      } else if (driver.getAButtonPressed()) {
-        intakeS.reverse();
-      } else if (driver.getBButtonPressed()) {
-        intakeS.disable();
-      }
-      intakeS.run(driver.getRightY());
+      // if (driver.getYButtonPressed()) {
+      //   intakeS.forward();
+      // } else if (driver.getAButtonPressed()) {
+      //   intakeS.reverse();
+      // } else if (driver.getBButtonPressed()) {
+      //   intakeS.disable();
+      // }
+      intakeS.spin(-driver.getRightY());
     }
 
     public void getDriveChoice() {
@@ -157,6 +157,7 @@
       SmartDashboard.putNumber("Right Y: ", rightY);
       SmartDashboard.putNumber("Trigger Speed", triggerSpeed);
       SmartDashboard.putBoolean("Replace Battery", PD.getVoltage() < 12.2);
+      SmartDashboard.putNumber("Kraken Pos: ", intakeS.getPos());
     }
 
     public Command getAutonomousCommand() {
