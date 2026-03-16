@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -22,9 +23,15 @@ public class Omnispike extends SubsystemBase {
         motorSP7.configure(motorSP7Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
     public void enable() {
-        motorSP7.set(0.8);
+        motorSP7.set(0.2);
     }
     public void disable() {
         motorSP7.stopMotor();
+    }
+    public Command enableCmd() {
+        return this.runOnce(() -> enable());
+    }
+    public Command stopCmd() {
+        return this.runOnce(() -> disable());
     }
 }

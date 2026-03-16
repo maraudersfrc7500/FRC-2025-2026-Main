@@ -12,26 +12,20 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class Launcher extends SubsystemBase {
-    private final SparkMax motorLL9, motorLF10;
+    private final TalonFX motorLL9;
+    // private final SparkMax motorLL9, motorLF10;
 
     public Launcher() {
-        motorLL9 = new SparkMax(9, MotorType.kBrushless);
-        motorLF10 = new SparkMax(10, MotorType.kBrushless);
-        
-        SparkMaxConfig configLL9 = new SparkMaxConfig();
-        configLL9.idleMode(IdleMode.kBrake);
-        SparkMaxConfig configLF10 = new SparkMaxConfig();
-        configLF10.idleMode(IdleMode.kBrake);
-        configLF10.follow(motorLL9);
-        
-        motorLL9.configure(configLL9, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        motorLF10.configure(configLF10, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        motorLL9 = new TalonFX(9);
+
+        motorLL9.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public void enable() {
@@ -39,5 +33,14 @@ public class Launcher extends SubsystemBase {
     }
     public void disable() {
         motorLL9.stopMotor();
+    }
+    public Command enableCmd() {
+        return this.runOnce(() -> enable());
+    }
+    public Command disableCmd() {
+        return this.runOnce(() -> disable());
+    }
+    public void spin(double s) {
+        motorLL9.set(s);
     }
 }

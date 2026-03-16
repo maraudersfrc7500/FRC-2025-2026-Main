@@ -10,7 +10,8 @@
   import org.json.simple.parser.ParseException;
 
   import com.pathplanner.lib.auto.AutoBuilder;
-  import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.config.RobotConfig;
   import com.pathplanner.lib.controllers.PPLTVController;
 
   import edu.wpi.first.wpilibj.Alert;
@@ -35,7 +36,7 @@
 
     private final Drive driveS;
     private final Intake intakeS;
-    // private final Launcher launcherS;
+    private final Launcher launcherS;
     // private final Omnispike omnispikeS;
     // private final Climb climbS;
 
@@ -52,7 +53,7 @@
 
       driveS = new Drive();
       intakeS = new Intake();
-      // launcherS = new Launcher();
+      launcherS = new Launcher();
       // omnispikeS = new Omnispike();
       // climbS = new Climb();
 
@@ -61,6 +62,8 @@
 
       configureAutoBuilder();
       configureBindings();
+
+      registerIntakeCmds();
 
       if (AutoBuilder.isConfigured()) {
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -107,6 +110,13 @@
 
     private void configureBindings() {}
 
+    private void registerIntakeCmds() {
+      NamedCommands.registerCommand("Intake Forward", intakeS.forwardCmd());
+      NamedCommands.registerCommand("Intake Disable", intakeS.stopCmd());
+      NamedCommands.registerCommand("Launcher Enable", launcherS.enableCmd());
+      NamedCommands.registerCommand("Launcher Disable", launcherS.disableCmd());
+    }
+
     public void autoPeriodics() {
       telemetry();
     }
@@ -132,14 +142,20 @@
           driveS.rocketLeague(triggerSpeed, leftX);
       }
 
-      // if (driver.getYButtonPressed()) {
+      // if (operator.getYButtonPressed()) {
       //   intakeS.forward();
-      // } else if (driver.getAButtonPressed()) {
-      //   intakeS.reverse();
-      // } else if (driver.getBButtonPressed()) {
+      // }
+      // if (operator.getBButtonPressed()) {
       //   intakeS.disable();
       // }
-      intakeS.spin(-driver.getRightY());
+
+      if (operator.getRightBumperButtonPressed()) {
+        intakeS.changeIntake();
+      }
+
+      intakeS.spin(deadband(operator.getRightTriggerAxis()));
+
+      launcherS.spin(deadband(operator.getRightY()));
     }
 
     public void getDriveChoice() {
@@ -158,9 +174,20 @@
       SmartDashboard.putNumber("Trigger Speed", triggerSpeed);
       SmartDashboard.putBoolean("Replace Battery", PD.getVoltage() < 12.2);
       SmartDashboard.putNumber("Kraken Pos: ", intakeS.getPos());
+      SmartDashboard.putBoolean("Double Intake: ", intakeS.doubleIntake);
+      SmartDashboard.putNumber("Intake Volts", intakeS.getVolts());
+      SmartDashboard.putNumber("Intake Current", intakeS.getCurrent());
     }
 
     public Command getAutonomousCommand() {
       return autoChooser.getSelected();
+    }
+
+    private double deadband(double d) {
+      if (Math.abs(d) < 0.18) {
+        return 0;
+      } else {
+        return d;
+      }
     }
   }
