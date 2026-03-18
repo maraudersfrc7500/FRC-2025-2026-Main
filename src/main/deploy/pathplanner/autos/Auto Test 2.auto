@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Intake Forward"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Circle 2m"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Disable"
           }
         }
       ]

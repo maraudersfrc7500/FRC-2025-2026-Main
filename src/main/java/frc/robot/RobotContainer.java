@@ -37,7 +37,7 @@ import com.pathplanner.lib.config.RobotConfig;
     private final Drive driveS;
     private final Intake intakeS;
     private final Launcher launcherS;
-    // private final Omnispike omnispikeS;
+    private final Omnispike omnispikeS;
     // private final Climb climbS;
 
     private XboxController driver, operator;
@@ -54,7 +54,7 @@ import com.pathplanner.lib.config.RobotConfig;
       driveS = new Drive();
       intakeS = new Intake();
       launcherS = new Launcher();
-      // omnispikeS = new Omnispike();
+      omnispikeS = new Omnispike();
       // climbS = new Climb();
 
       driver = new XboxController(0);
@@ -115,6 +115,8 @@ import com.pathplanner.lib.config.RobotConfig;
       NamedCommands.registerCommand("Intake Disable", intakeS.stopCmd());
       NamedCommands.registerCommand("Launcher Enable", launcherS.enableCmd());
       NamedCommands.registerCommand("Launcher Disable", launcherS.disableCmd());
+      NamedCommands.registerCommand("OmniSpike Enable", omnispikeS.enableCmd());
+      NamedCommands.registerCommand("OmniSpike Disable", omnispikeS.stopCmd());
     }
 
     public void autoPeriodics() {
@@ -130,32 +132,27 @@ import com.pathplanner.lib.config.RobotConfig;
       rightY = -driver.getRightY();
       rightX = -driver.getRightX();
       
+      driveS.robotCentricDrive(rightY, leftX);
 
-      switch (driveType) {
-        case 0:
-          driveS.robotCentricDrive(leftY, rightX);
-          break;
-        case 1:
-          driveS.driveNoSquare(triggerSpeed, leftX);
-          break;
-        case 2:
-          driveS.rocketLeague(triggerSpeed, leftX);
+      if (operator.getPOV() == 0) {
+        intakeS.forward();
       }
-
-      // if (operator.getYButtonPressed()) {
-      //   intakeS.forward();
-      // }
-      // if (operator.getBButtonPressed()) {
-      //   intakeS.disable();
-      // }
-
-      if (operator.getRightBumperButtonPressed()) {
+      if (operator.getPOV() == 180) {
+        intakeS.disable();
+      }
+      if (operator.getLeftBumperButtonPressed()) {
         intakeS.changeIntake();
       }
 
-      intakeS.spin(deadband(operator.getRightTriggerAxis()));
+      if (operator.getAButtonPressed()) {
+        omnispikeS.enable();
+      }
+      if (operator.getBButtonPressed()) {
+        omnispikeS.disable();
+      }
 
-      launcherS.spin(deadband(operator.getRightY()));
+      launcherS.spin(deadband(operator.getRightTriggerAxis()));
+      
     }
 
     public void getDriveChoice() {
@@ -175,8 +172,7 @@ import com.pathplanner.lib.config.RobotConfig;
       SmartDashboard.putBoolean("Replace Battery", PD.getVoltage() < 12.2);
       SmartDashboard.putNumber("Kraken Pos: ", intakeS.getPos());
       SmartDashboard.putBoolean("Double Intake: ", intakeS.doubleIntake);
-      SmartDashboard.putNumber("Intake Volts", intakeS.getVolts());
-      SmartDashboard.putNumber("Intake Current", intakeS.getCurrent());
+      SmartDashboard.putNumber("POV: ",operator.getPOV());
     }
 
     public Command getAutonomousCommand() {

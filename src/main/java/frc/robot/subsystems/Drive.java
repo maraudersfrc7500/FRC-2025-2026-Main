@@ -88,12 +88,6 @@ public class Drive extends SubsystemBase{
     public void robotCentricDrive(double x, double xr) {
         diff.arcadeDrive(x, xr);
     }
-    public void driveNoSquare(double s, double t) {
-        diff.arcadeDrive(s,t,false);
-    }
-    public void rocketLeague(double s, double t) {
-        diff.arcadeDrive(s, t, true);
-    }
     public void drive(ChassisSpeeds speeds) {
         DifferentialDriveWheelSpeeds wheelSpeeds = diffKin.toWheelSpeeds(speeds);
         double leftOutput = wheelSpeeds.leftMetersPerSecond / 4.56;
