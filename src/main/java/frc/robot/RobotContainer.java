@@ -169,8 +169,10 @@ import edu.wpi.first.wpilibj.Alert;
       if (operator.getXButtonPressed()) {
         launcherS.disable();
       }
-
-      
+      if (operator.getLeftBumperPressed()) {
+        launcherS.changePower(operator.getPOV());
+      }
+      SmartDashboard.putNumber("POV: ", operator.getPOV());
     }
     
     public double calculateDistance() {
