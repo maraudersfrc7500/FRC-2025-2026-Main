@@ -174,12 +174,12 @@ import edu.wpi.first.wpilibj.Alert;
     }
     
     public double calculateDistance() {
-      double a1 = 0;
+      double a1 = 81.22218;
       double a2 = LimelightHelpers.getTX("limelight-front");
       double h1 = 23.25;
       double h2 = 44.25;
       double height_diff=(h2-h1);
-      double angle = Math.toRadians(Math.abs(a1+a2));
+      double angle = Math.toRadians(Math.abs(a2)+Math.abs(a1));
       double distance = (height_diff/Math.tan(angle));
       return distance;
     }
