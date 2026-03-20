@@ -165,13 +165,13 @@ import edu.wpi.first.wpilibj.Alert;
 
       launcherS.spin(deadband(operator.getRightTriggerAxis()));
 
-      calculateDistance();
+      // calculateDistance();
       
     }
-    public double calculateDistance() {
-      private a1 = 
-      return 1;
-    }
+    // public double calculateDistance() {
+    //   private a1 = 
+    //   return 1;
+    // }
     public void telemetry() {
       SmartDashboard.putNumber("XPos: ", driveS.getX());
       SmartDashboard.putNumber("YPos: ",driveS.getY());
@@ -181,6 +181,7 @@ import edu.wpi.first.wpilibj.Alert;
       SmartDashboard.putNumber("Encoder Right: ", driveS.getEncoderRight());
       SmartDashboard.putBoolean("Replace Battery", PD.getVoltage() < 12.2);
       SmartDashboard.putBoolean("Double Intake: ", intakeS.doubleIntake);
+      launcherS.launchPeriodic();
     }
 
     public Command getAutonomousCommand() {
