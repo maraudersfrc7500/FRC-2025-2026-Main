@@ -17,7 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Intake extends SubsystemBase {
-    private final TalonFX motorIL5, motorIF6;
+    private final TalonFX motorIL5;
+    private final TalonFX motorIF6;
     public boolean doubleIntake;
     private NeutralModeValue motorIF6NMV;
 
@@ -25,29 +26,30 @@ public class Intake extends SubsystemBase {
         motorIL5 = new TalonFX(5);
         motorIF6 = new TalonFX(6);
 
-        motorIF6NMV = NeutralModeValue.Coast;
+        // motorIF6NMV = NeutralModeValue.Coast;
 
-        motorIL5.setNeutralMode(NeutralModeValue.Brake);
-        motorIF6.setNeutralMode(motorIF6NMV);
+        // motorIL5.setNeutralMode(NeutralModeValue.Brake);
+        motorIF6.setNeutralMode(NeutralModeValue.Brake);
+        motorIL5.setNeutralMode(NeutralModeValue.Coast);
 
-        motorIF6.setControl(new DutyCycleOut(0));
+        // motorIF6.setControl(new DutyCycleOut(0));
 
         doubleIntake = false;
     }
     public void forward() {
-        motorIL5.set(0.6);
+        motorIF6.set(0.6);
     }
     public void reverse() {
-        motorIL5.set(-0.5);
+        motorIF6.set(-0.5);
     }
     public void disable() {
-        motorIL5.stopMotor();
+        motorIF6.stopMotor();
     }
     public void spin(double s) {
-        motorIL5.set(s);
+        motorIF6.set(s);
     }
     public double getPos() {
-        return motorIL5.getPosition().getValueAsDouble();
+        return motorIF6.getPosition().getValueAsDouble();
     }
     public Command forwardCmd() {
         return this.runOnce(() -> forward());
@@ -56,20 +58,20 @@ public class Intake extends SubsystemBase {
         return this.runOnce(() -> disable());
     }
     public double getVolts() {
-        return motorIL5.getMotorVoltage().getValueAsDouble();
+        return motorIF6.getMotorVoltage().getValueAsDouble();
     }
     public double getCurrent() {
-        return motorIL5.getSupplyCurrent().getValueAsDouble();
+        return motorIF6.getSupplyCurrent().getValueAsDouble();
     }
-    public void changeIntake() {
-        if (doubleIntake) {
-            motorIF6NMV = NeutralModeValue.Coast;
-            motorIF6.setControl(new DutyCycleOut(0));
-        } else {
-            motorIF6NMV = NeutralModeValue.Brake;
-            motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
-        }
-        doubleIntake = !doubleIntake;
-        motorIF6.setNeutralMode(motorIF6NMV);
-    }
+    // public void changeIntake() {
+    //     if (doubleIntake) {
+    //         motorIF6NMV = NeutralModeValue.Coast;
+    //         motorIF6.setControl(new DutyCycleOut(0));
+    //     } else {
+    //         motorIF6NMV = NeutralModeValue.Brake;
+    //         motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
+    //     }
+    //     doubleIntake = !doubleIntake;
+    //     motorIF6.setNeutralMode(motorIF6NMV);
+    // }
 }

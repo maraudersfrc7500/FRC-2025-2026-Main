@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Circle 2m"
+            "pathName": "Left Start to Left Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Bump to Neutral"
           }
         },
         {
@@ -19,13 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Circle 2m"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Disable"
+            "pathName": "Left Pickup Balls"
           }
         }
       ]
