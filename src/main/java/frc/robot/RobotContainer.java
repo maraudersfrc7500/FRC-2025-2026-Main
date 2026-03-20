@@ -174,7 +174,7 @@ import edu.wpi.first.wpilibj.Alert;
     }
     
     public double calculateDistance() {
-      double a1 = 81.22218;
+      double a1 = 8.77782;
       double a2 = LimelightHelpers.getTX("limelight-front");
       double h1 = 23.25;
       double h2 = 44.25;
