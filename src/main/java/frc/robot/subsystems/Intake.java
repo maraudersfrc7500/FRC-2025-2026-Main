@@ -29,9 +29,9 @@ public class Intake extends SubsystemBase {
         motorIF6NMV = NeutralModeValue.Coast;
 
         motorIL5.setNeutralMode(NeutralModeValue.Brake);
-        motorIF6.setNeutralMode(motorIF6NMV);
+        motorIF6.setNeutralMode(NeutralModeValue.Brake);
 
-        motorIF6.setControl(new DutyCycleOut(0));
+        motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
 
         doubleIntake = false;
     }

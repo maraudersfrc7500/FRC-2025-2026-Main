@@ -140,9 +140,9 @@ import com.pathplanner.lib.config.RobotConfig;
       if (operator.getPOV() == 180) {
         intakeS.disable();
       }
-      if (operator.getLeftBumperButtonPressed()) {
-        intakeS.changeIntake();
-      }
+      // if (operator.getLeftBumperButtonPressed()) {
+      //   intakeS.changeIntake();
+      // }
 
       if (operator.getAButtonPressed()) {
         omnispikeS.enable();
