@@ -164,9 +164,14 @@ import edu.wpi.first.wpilibj.Alert;
       }
 
       launcherS.spin(deadband(operator.getRightTriggerAxis()));
+
+      calculateDistance();
       
     }
-
+    public double calculateDistance() {
+      private a1 = 
+      return 1;
+    }
     public void telemetry() {
       SmartDashboard.putNumber("XPos: ", driveS.getX());
       SmartDashboard.putNumber("YPos: ",driveS.getY());
