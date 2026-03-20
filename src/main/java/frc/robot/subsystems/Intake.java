@@ -26,13 +26,12 @@ public class Intake extends SubsystemBase {
         motorIL5 = new TalonFX(5);
         motorIF6 = new TalonFX(6);
 
-        // motorIF6NMV = NeutralModeValue.Coast;
+        motorIF6NMV = NeutralModeValue.Coast;
 
-        // motorIL5.setNeutralMode(NeutralModeValue.Brake);
-        motorIF6.setNeutralMode(NeutralModeValue.Brake);
-        motorIL5.setNeutralMode(NeutralModeValue.Coast);
+        motorIL5.setNeutralMode(NeutralModeValue.Brake);
+        motorIF6.setNeutralMode(motorIF6NMV);
 
-        // motorIF6.setControl(new DutyCycleOut(0));
+        motorIF6.setControl(new DutyCycleOut(0));
 
         doubleIntake = false;
     }
@@ -63,15 +62,15 @@ public class Intake extends SubsystemBase {
     public double getCurrent() {
         return motorIF6.getSupplyCurrent().getValueAsDouble();
     }
-    // public void changeIntake() {
-    //     if (doubleIntake) {
-    //         motorIF6NMV = NeutralModeValue.Coast;
-    //         motorIF6.setControl(new DutyCycleOut(0));
-    //     } else {
-    //         motorIF6NMV = NeutralModeValue.Brake;
-    //         motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
-    //     }
-    //     doubleIntake = !doubleIntake;
-    //     motorIF6.setNeutralMode(motorIF6NMV);
-    // }
+    public void changeIntake() {
+        if (doubleIntake) {
+            motorIF6NMV = NeutralModeValue.Coast;
+            motorIF6.setControl(new DutyCycleOut(0));
+        } else {
+            motorIF6NMV = NeutralModeValue.Brake;
+            motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
+        }
+        doubleIntake = !doubleIntake;
+        motorIF6.setNeutralMode(motorIF6NMV);
+    }
 }
