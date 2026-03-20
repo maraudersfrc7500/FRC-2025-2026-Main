@@ -7,6 +7,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +23,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     //Autos
     CameraServer.startAutomaticCapture();
+    CvSink cvSink = CameraServer.getVideo();
+    CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+
   }
 
   @Override
@@ -68,7 +73,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.getDriveChoice();
   }
 
   @Override
