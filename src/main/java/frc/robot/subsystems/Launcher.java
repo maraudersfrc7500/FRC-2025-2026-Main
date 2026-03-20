@@ -25,14 +25,15 @@ public class Launcher extends SubsystemBase {
     private final TalonFX motorLL9;
     private TalonFXConfiguration config = new TalonFXConfiguration();
     private final VelocityVoltage veloControl = new VelocityVoltage(0);
-    private final double targetRPS = 6400.0 / 60.0;
+    private final double targetRPS = 6000.0 / 60.0;
 
     public Launcher() {
         motorLL9 = new TalonFX(9);
 
-        motorLL9.setNeutralMode(NeutralModeValue.Brake);
-
+        motorLL9.setControl(veloControl.withVelocity(0));
+        
         configurePID();
+        motorLL9.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public void enable() {
@@ -53,7 +54,7 @@ public class Launcher extends SubsystemBase {
     public void configurePID() {
         config.Slot0.kV = 1.0/targetRPS;
         config.Slot0.kS = 0.25;
-        config.Slot0.kP = 0.20;
+        config.Slot0.kP = 0.35;
 
         motorLL9.getConfigurator().apply(config);
     }
@@ -63,5 +64,6 @@ public class Launcher extends SubsystemBase {
     }
     public void launchPeriodic() {
         SmartDashboard.putNumber("Launcher RPS: ", motorLL9.getVelocity().getValueAsDouble());
+        SmartDashboard.putBoolean("Ready To Shoot: ",isReadyToShoot());
     }
 }

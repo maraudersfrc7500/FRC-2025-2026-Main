@@ -163,17 +163,13 @@ import edu.wpi.first.wpilibj.Alert;
         omnispikeS.disable();
       }
 
-      launcherS.spin(deadband(operator.getRightTriggerAxis()));
+      if (operator.getYButtonPressed()) {
+        launcherS.enable();
+      }
+      if (operator.getXButtonPressed()) {
+        launcherS.disable();
+      }
 
-<<<<<<< Updated upstream
-      // calculateDistance();
-      
-    }
-    // public double calculateDistance() {
-    //   private a1 = 
-    //   return 1;
-    // }
-=======
       
     }
     
@@ -188,7 +184,6 @@ import edu.wpi.first.wpilibj.Alert;
       return distance;
     }
       
->>>>>>> Stashed changes
     public void telemetry() {
       SmartDashboard.putNumber("XPos: ", driveS.getX());
       SmartDashboard.putNumber("YPos: ",driveS.getY());

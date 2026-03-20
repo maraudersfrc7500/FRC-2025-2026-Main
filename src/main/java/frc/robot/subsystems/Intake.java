@@ -18,37 +18,30 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class Intake extends SubsystemBase {
     private final TalonFX motorIL5;
-    private final TalonFX motorIF6;
     public boolean doubleIntake;
     private NeutralModeValue motorIF6NMV;
 
     public Intake() {
         motorIL5 = new TalonFX(5);
-        motorIF6 = new TalonFX(6);
-
-        motorIF6NMV = NeutralModeValue.Coast;
 
         motorIL5.setNeutralMode(NeutralModeValue.Brake);
-        motorIF6.setNeutralMode(NeutralModeValue.Brake);
-
-        motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
 
         doubleIntake = false;
     }
     public void forward() {
-        motorIF6.set(0.7);
+        motorIL5.set(0.7);
     }
     public void reverse() {
-        motorIF6.set(-0.5);
+        motorIL5.set(-0.5);
     }
     public void disable() {
-        motorIF6.stopMotor();
+        motorIL5.stopMotor();
     }
     public void spin(double s) {
-        motorIF6.set(s);
+        motorIL5.set(s);
     }
     public double getPos() {
-        return motorIF6.getPosition().getValueAsDouble();
+        return motorIL5.getPosition().getValueAsDouble();
     }
     public Command forwardCmd() {
         return this.runOnce(() -> forward());
@@ -57,20 +50,9 @@ public class Intake extends SubsystemBase {
         return this.runOnce(() -> disable());
     }
     public double getVolts() {
-        return motorIF6.getMotorVoltage().getValueAsDouble();
+        return motorIL5.getMotorVoltage().getValueAsDouble();
     }
     public double getCurrent() {
-        return motorIF6.getSupplyCurrent().getValueAsDouble();
-    }
-    public void changeIntake() {
-        if (doubleIntake) {
-            motorIF6NMV = NeutralModeValue.Coast;
-            motorIF6.setControl(new DutyCycleOut(0));
-        } else {
-            motorIF6NMV = NeutralModeValue.Brake;
-            motorIF6.setControl(new Follower(motorIL5.getDeviceID(), MotorAlignmentValue.Aligned));
-        }
-        doubleIntake = !doubleIntake;
-        motorIF6.setNeutralMode(motorIF6NMV);
+        return motorIL5.getSupplyCurrent().getValueAsDouble();
     }
 }
