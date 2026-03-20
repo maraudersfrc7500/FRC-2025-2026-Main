@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Back Tag ID:", LimelightHelpers.getFiducialID("limelight-back"));
     SmartDashboard.putNumber("Back Tag X", LimelightHelpers.getTX("limelight-back"));
     SmartDashboard.putNumber("Back Tag Y", LimelightHelpers.getTY("limelight-back"));
+    SmartDashboard.putNumber("Launcher Distance", m_robotContainer.calculateDistance());
     SmartDashboard.updateValues();
   }
 

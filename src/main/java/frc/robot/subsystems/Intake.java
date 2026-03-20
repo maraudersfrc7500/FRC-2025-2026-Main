@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
         doubleIntake = false;
     }
     public void forward() {
-        motorIF6.set(0.6);
+        motorIF6.set(0.7);
     }
     public void reverse() {
         motorIF6.set(-0.5);
