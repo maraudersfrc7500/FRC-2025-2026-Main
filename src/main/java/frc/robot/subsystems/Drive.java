@@ -45,16 +45,16 @@ public class Drive extends SubsystemBase{
         motorRF4 = new SparkMax(4,MotorType.kBrushless);
 
         SparkMaxConfig configLL = new SparkMaxConfig();
-        configLL.idleMode(IdleMode.kBrake);
+        configLL.idleMode(IdleMode.kCoast);
         SparkMaxConfig configLF = new SparkMaxConfig();
         configLF.follow(motorLL1);
-        configLF.idleMode(IdleMode.kBrake);
+        configLF.idleMode(IdleMode.kCoast);
         SparkMaxConfig configRL = new SparkMaxConfig();
-        configRL.idleMode(IdleMode.kBrake);
+        configRL.idleMode(IdleMode.kCoast);
         configRL.inverted(true);
         SparkMaxConfig configRF = new SparkMaxConfig();
         configRF.follow(motorRL2);
-        configRF.idleMode(IdleMode.kBrake);
+        configRF.idleMode(IdleMode.kCoast);
         configRF.inverted(true);
 
         motorLL1.configure(configLL,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
