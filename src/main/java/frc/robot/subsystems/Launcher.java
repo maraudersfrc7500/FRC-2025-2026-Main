@@ -57,7 +57,7 @@ public class Launcher extends SubsystemBase {
     public void launchPeriodic() {
         SmartDashboard.putNumber("Launcher RPS: ", motorLL9.getVelocity().getValueAsDouble());
         SmartDashboard.putBoolean("Ready To Shoot: ",isReadyToShoot());
-        SmartDashboard.putNumber("Power: ",launchPower);
+        SmartDashboard.putString("Power: ",launchPower*100+"%");
         SmartDashboard.putNumber("Target RPS: ",targetRPS);
     }
     public void changePower(int POV) {

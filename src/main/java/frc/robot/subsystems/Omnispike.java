@@ -23,7 +23,7 @@ public class Omnispike extends SubsystemBase {
         motorSP7.configure(motorSP7Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
     public void enable() {
-        motorSP7.set(0.4);
+        motorSP7.set(0.6);
     }
     public void disable() {
         motorSP7.stopMotor();
