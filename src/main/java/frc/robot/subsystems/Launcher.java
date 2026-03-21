@@ -60,12 +60,14 @@ public class Launcher extends SubsystemBase {
         SmartDashboard.putNumber("Target RPS: ",targetRPS);
     }
     public void changePower(int POV) {
-        if (launchPower > 0 && launchPower < 1.0) {
-            if (POV == 270) {
+        if (POV == 270) {
+            if (launchPower > 0.5) {
                 launchPower -= 0.1;
             }
-            if (POV == 90) {
-                launchPower += 0.1;
+        }
+        if (POV == 90) {
+            if (launchPower < 1.0) {
+                launchPower += 10;
             }
         }
         targetRPS = 6400 * launchPower;
