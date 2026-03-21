@@ -13,7 +13,7 @@ public class Launcher extends SubsystemBase {
     private final TalonFX motorLL9;
     private TalonFXConfiguration config = new TalonFXConfiguration();
     private final VelocityVoltage veloControl = new VelocityVoltage(0);
-    private double targetRPS = 6000.0 / 60.0;
+    private double targetRPS;
     private double launchPower;
 
     public Launcher() {
@@ -24,7 +24,8 @@ public class Launcher extends SubsystemBase {
         configurePID();
         motorLL9.setNeutralMode(NeutralModeValue.Brake);
 
-        launchPower = 0.9;
+        launchPower = 0.85;
+        targetRPS = (6400.0*launchPower) / 60.0;
     }
 
     public void enable() {
@@ -62,12 +63,12 @@ public class Launcher extends SubsystemBase {
     public void changePower(int POV) {
         if (POV == 270) {
             if (launchPower > 0.5) {
-                launchPower -= 0.1;
+                launchPower -= 0.05;
             }
         }
         if (POV == 90) {
             if (launchPower < 1.0) {
-                launchPower += 10;
+                launchPower += 0.05;
             }
         }
         targetRPS = 6400 * launchPower;
